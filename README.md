@@ -5,7 +5,7 @@ y generos. Tenemos varias opciones para manejar estos datos, podemos retornarlos
 
 ## Comenzando 🚀
 
-_Debes crear una database MYSQL, y configurar el application.properties del proyecto, con eso deberia ser suficiente. _
+_Debes crear una database MYSQL, y configurar el application.properties del proyecto, con eso deberia ser suficiente._
 
 
 ## Autor ✒️
