@@ -35,6 +35,8 @@ public class CelebrityService {
         return celebrityDTOList;
     }
 
+    public List<Celebrity> getCelebritiesFull(){ return celebrityRepository.findAll(); }
+
     //get by id
     public Celebrity getCelebrityById(Long id) {
         return celebrityRepository.findById(id).orElseThrow(
@@ -60,9 +62,9 @@ public class CelebrityService {
     }
 
     //get by movie
-    public List<Celebrity> getCelebrityByMovie(Movie movie) {
-        return celebrityRepository.findCelebrityByMovie(movie).orElseThrow(() ->
-                new IllegalStateException("No existe el personaje con nombre"+movie.getTitle()));
+    public List<Celebrity> getCelebrityByMovieId(Long movieId) {
+        return celebrityRepository.findCelebrityByMovieId(movieId).orElseThrow(() ->
+                new IllegalStateException("No existe el persona con pelicula de id: "+movieId));
     }
 
     //crear

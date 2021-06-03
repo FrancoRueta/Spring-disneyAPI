@@ -33,22 +33,37 @@ public class MovieService {
         for (Movie m: movieRepository.findAll()){
             DateTimeAux aux = new DateTimeAux();
             MovieDTO newMovie = new MovieDTO();
-            if (m.getImage() != null){
-            newMovie.setImage(m.getImage()); }
-            if (m.getTitle() != null){
-            newMovie.setTitle(m.getTitle()); }
-            if (m.getDateCreation() != null){
-                newMovie.setDateCreation(aux.dtStr(m.getDateCreation())); }
+            if (m.getImage() != null){ newMovie.setImage(m.getImage()); }
+            if (m.getTitle() != null){ newMovie.setTitle(m.getTitle()); }
+            if (m.getDateCreation() != null){ newMovie.setDateCreation(aux.dtStr(m.getDateCreation())); }
             dtoList.add(newMovie);
         }
         return dtoList;
     }
 
     //get by id
-    public Movie getMovie(Long movieId) {
+    public Movie getMovieById(Long movieId) {
         return movieRepository.findById(movieId).orElseThrow(() ->
                 new IllegalStateException("No existe la pelicula " + movieId));
     }
+
+    //get by title
+    public Movie getMovieByTitle(String title) {
+        return movieRepository.findMovieByTitle(title).orElseThrow(() ->
+                new IllegalStateException("No existe la pelicula con titulo: "+title));
+    }
+
+    //get by genre
+    public List<Movie> getMovieByGenreId(Long genreId) {
+        return movieRepository.findMovieByGenreId(genreId).orElseThrow(() ->
+                new IllegalStateException("No existe el genero de id: "+genreId));
+    }
+
+    //get by date
+    /*public List<Movie> getMovieByDate(String date) {
+
+    }*/
+
 
 
     //post
@@ -85,4 +100,6 @@ public class MovieService {
         celebs.add(celebrity);
         movie.setCelebrities(celebs);
     }
+
+
 }

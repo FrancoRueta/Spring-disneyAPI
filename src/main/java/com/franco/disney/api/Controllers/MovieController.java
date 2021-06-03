@@ -7,6 +7,7 @@ import com.franco.disney.api.Services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,15 +24,25 @@ public class MovieController {
 
 
     //get all
-    @GetMapping
+    @GetMapping(path = "/")
     public List<MovieDTO> getMovies(){
         return movieService.getMovies();
     }
 
-    @GetMapping(path = "/see/{movieId}")
-    public Movie getMovie(@PathVariable("movieId") Long movieId){
-        return movieService.getMovie(movieId);
+    @GetMapping
+    public List<Movie> getMovieBy(@RequestParam(required = false) Long id,
+                                  @RequestParam(required = false) String title,
+                                  @RequestParam(required = false) Long genre,
+                                  @RequestParam(required = false) String order){
+        List<Movie> movieList = new ArrayList<>();
+        if(id != null){movieList.add(movieService.getMovieById(id));}
+        if(title != null){movieList.add(movieService.getMovieByTitle(title));}
+        if(genre != null){movieList.addAll(movieService.getMovieByGenreId(genre));}
+        /*if(order != null){movieList.addAll(movieService.getMovieByDate(order));}*/
+        return movieList;
     }
+
+
 
     @PostMapping
     public void addNewMovie(@RequestBody Movie movie){
@@ -50,6 +61,4 @@ public class MovieController {
                             @RequestParam(required = false) String dateCreation) {
         movieService.updateMovie(movieId,image,title,dateCreation);
     }
-
-    //DETALLEPELICULA = devuelve los capmos de la peli mas los personajes.
 }

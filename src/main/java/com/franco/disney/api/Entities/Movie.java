@@ -1,18 +1,13 @@
 package com.franco.disney.api.Entities;
 
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
 
 
@@ -54,31 +49,33 @@ public class Movie {
     private Set<Celebrity> celebrities = new HashSet<>();
 
 
-    @ManyToOne
-    @JoinColumn(name="genre_id")
+    @ManyToOne(targetEntity = Genre.class, cascade =
+            {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
+    @JoinColumn(name = "genre_id")
     private Genre genre;
 
+    public Movie() {
+    }
 
     public Movie(String image, String title) {
         this.image = image;
         this.title = title;
     }
 
-    public Movie(String image, String title, LocalDate dateCreation, Set<Celebrity> celebrities) {
+    public Movie(String image, String title, LocalDate dateCreation, Set<Celebrity> celebrities, Genre genre) {
         this.image = image;
         this.title = title;
         this.dateCreation = dateCreation;
         this.celebrities = celebrities;
+        this.genre = genre;
     }
 
-    public Movie(Long id, String image, String title, LocalDate dateCreation, Set<Celebrity> celebrities) {
+    public Movie(Long id, String image, String title, LocalDate dateCreation, Set<Celebrity> celebrities, Genre genre) {
         this.id = id;
         this.image = image;
         this.title = title;
         this.dateCreation = dateCreation;
         this.celebrities = celebrities;
-    }
-
-    public Movie() {
+        this.genre = genre;
     }
 }

@@ -1,14 +1,20 @@
 package com.franco.disney.api.Entities;
 
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Table
 @Entity
 @Data
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Genre {
     @Id
     @SequenceGenerator(
@@ -16,14 +22,22 @@ public class Genre {
             sequenceName = "genre_sequence",
             allocationSize = 1)
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
+            strategy = GenerationType.IDENTITY,
             generator = "genre_sequence")
+    @Column(name = "genre_id")
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "image")
     private String image;
 
-    @OneToMany(mappedBy = "genre")
-    private Set<Movie> movies;
+    @OneToMany(mappedBy = "genre",targetEntity = Movie.class,cascade =
+            {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
+    @EqualsAndHashCode.Exclude
+    @JsonIgnoreProperties({"movies"})
+    private Set<Movie> movies = new HashSet<>();
 
     public Genre() {
     }

@@ -8,6 +8,7 @@ import com.franco.disney.api.Services.CelebrityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,41 +23,30 @@ public class CelebrityController {
     }
 
     //get all
-    @GetMapping
+    @GetMapping(path = "/")
     public List<CelebrityDTO> getCelebrities() {
         return celebrityService.getCelebrities();
     }
 
-    //get by id
-    @GetMapping(path = "/id/")
-    public Celebrity getCelebrityById( Long id) {
-        return celebrityService.getCelebrityById(id);
+    //get by value
+    @GetMapping
+    public List<Celebrity> getCelebrityBy(@RequestParam(required = false) Long id,
+                                          @RequestParam(required = false) String name,
+                                          @RequestParam(required = false) Integer age,
+                                          @RequestParam(required = false) Integer weight,
+                                          @RequestParam(required = false) Long movies){
+        List<Celebrity> celebrityList = new ArrayList<>();
+        if(id != null){celebrityList.add(celebrityService.getCelebrityById(id));}
+        if(name != null){celebrityList.add(celebrityService.getCelebrityByName(name));}
+        if(age != null){celebrityList.addAll(celebrityService.getCelebrityByAge(age));}
+        if(weight != null){celebrityList.addAll(celebrityService.getCelebrityByWeight(weight));}
+        if(movies != null){celebrityList.addAll(celebrityService.getCelebrityByMovieId(movies));}
+        return celebrityList;
     }
 
-    //get by name
-    @GetMapping(path = "/name/")
-    public Celebrity getCelebrityByName( String name ){
-        return celebrityService.getCelebrityByName(name);
-    }
-
-    //get by age
-    @GetMapping(path = "/age/")
-    public List<Celebrity> getCelebrityByAge( Integer age ){
-        return celebrityService.getCelebrityByAge(age);
-    }
-
-    //get by weight
-    @GetMapping(path = "/weight/")
-    public List<Celebrity> getCelebrityByWeight( Integer weight ){
-        return celebrityService.getCelebrityByWeight(weight);
-    }
-
-    //get by movie
-    @GetMapping(path = "/movie/")
-    public List<Celebrity> getCelebrityByName(Movie movie){
-        return celebrityService.getCelebrityByMovie(movie);
-    }
-
+    /*Guardar el personaje que te viene. CHECK
+    Recorrer las peliculas que te vinieron.
+    Si no existen, crearlas. Si existen, agregarle el personaje mediante un update*/
     //post
     @PostMapping
     public void addNewCelebrity(@RequestBody Celebrity celebrity) {

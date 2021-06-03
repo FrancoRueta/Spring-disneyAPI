@@ -23,5 +23,5 @@ public interface CelebrityRepository extends JpaRepository<Celebrity, Long> {
     Optional<List<Celebrity>> findCelebrityByAge(Integer age);
 
     @Query("SELECT c FROM Celebrity c INNER JOIN c.movies m WHERE m.id = ?1")
-    Optional<List<Celebrity>> findCelebrityByMovie(Movie movie);
+    Optional<List<Celebrity>> findCelebrityByMovieId(Long movieId);
 }

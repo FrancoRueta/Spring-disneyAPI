@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -51,7 +50,8 @@ public class Celebrity {
     @EqualsAndHashCode.Exclude
     private Set<Movie> movies = new HashSet<>();
 
-
+    public Celebrity() {
+    }
 
     public Celebrity(String image, String name, Integer age, Integer weight, String story, Set<Movie> movies) {
         this.image = image;
@@ -70,8 +70,5 @@ public class Celebrity {
         this.weight = weight;
         this.story = story;
         this.movies = movies;
-    }
-
-    public Celebrity() {
     }
 }
