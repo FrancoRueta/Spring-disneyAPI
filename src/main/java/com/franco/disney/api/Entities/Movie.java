@@ -87,5 +87,4 @@ public class Movie implements Comparable<Movie> {
         }
         return getDateCreation().compareTo(m.getDateCreation());
     }
-
 }

@@ -4,12 +4,11 @@ package com.franco.disney.api.Controllers;
 import com.franco.disney.api.Entities.DTOS.MovieDTO;
 import com.franco.disney.api.Entities.Movie;
 import com.franco.disney.api.Services.MovieService;
+import com.sun.xml.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping(path = "/movies")
@@ -31,20 +30,17 @@ public class MovieController {
     }
 
     @GetMapping
-    public List<Movie> getMovieBy(@RequestParam(required = false) Long id,
+    public Set<Movie> getMovieBy(@RequestParam(required = false) Long id,
                                   @RequestParam(required = false) String title,
                                   @RequestParam(required = false) Long genre,
                                   @RequestParam(required = false) String date,
                                   @RequestParam(required = false) String order){
-        List<Movie> movieList = new ArrayList<>();
+        Set<Movie> movieList = new HashSet<>();
         if(id != null){movieList.add(movieService.getMovieById(id));}
         if(title != null){movieList.add(movieService.getMovieByTitle(title));}
         if(genre != null){movieList.addAll(movieService.getMovieByGenreId(genre));}
         if(date != null){movieList.addAll(movieService.getMovieByDate(date));}
-        if (order != null){
-            if (order.equals("ASC")) { Collections.sort(movieList); }
-            else if (order.equals("DESC")){ Collections.reverse(movieList); }
-        }
+        //TODO("AGREGAR EL ORDEN DE FILTRADO POR FECHA.")
         return movieList;
     }
 

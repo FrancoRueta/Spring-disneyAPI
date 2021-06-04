@@ -24,4 +24,8 @@ public interface CelebrityRepository extends JpaRepository<Celebrity, Long> {
 
     @Query("SELECT c FROM Celebrity c INNER JOIN c.movies m WHERE m.id = ?1")
     Optional<List<Celebrity>> findCelebrityByMovieId(Long movieId);
+
+    boolean existsByName(String name);
+
+    Celebrity findByName(String name);
 }
