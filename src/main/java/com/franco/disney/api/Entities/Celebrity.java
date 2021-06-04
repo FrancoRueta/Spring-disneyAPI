@@ -26,13 +26,13 @@ public class Celebrity {
             strategy = GenerationType.IDENTITY,
             generator = "celebrity_sequence"
     )
-    @Column(name = "celebrity_id")
+    @Column(name = "celebrity_id",unique = true)
     private Long id;
 
     @Column(name = "image")
     private String image;
 
-    @Column(name = "name")
+    @Column(name = "name",unique = true)
     private String name;
 
     @Column(name = "age")

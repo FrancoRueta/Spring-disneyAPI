@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-public class Movie {
+public class Movie implements Comparable<Movie> {
     @Id
     @SequenceGenerator(
             name = "movie_sequence",
@@ -78,4 +79,13 @@ public class Movie {
         this.celebrities = celebrities;
         this.genre = genre;
     }
+
+    @Override
+    public int compareTo(Movie m) {
+        if (getDateCreation() == null || m.getDateCreation() == null) {
+            return 0;
+        }
+        return getDateCreation().compareTo(m.getDateCreation());
+    }
+
 }

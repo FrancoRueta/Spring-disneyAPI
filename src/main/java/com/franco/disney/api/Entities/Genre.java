@@ -24,10 +24,10 @@ public class Genre {
     @GeneratedValue(
             strategy = GenerationType.IDENTITY,
             generator = "genre_sequence")
-    @Column(name = "genre_id")
+    @Column(name = "genre_id",unique = true)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name",unique = true)
     private String name;
 
     @Column(name = "image")

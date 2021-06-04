@@ -3,7 +3,6 @@ package com.franco.disney.api.Controllers;
 
 import com.franco.disney.api.Entities.Celebrity;
 import com.franco.disney.api.Entities.DTOS.CelebrityDTO;
-import com.franco.disney.api.Entities.Movie;
 import com.franco.disney.api.Services.CelebrityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -44,10 +43,6 @@ public class CelebrityController {
         return celebrityList;
     }
 
-    /*Guardar el personaje que te viene. CHECK
-    Recorrer las peliculas que te vinieron.
-    Si no existen, crearlas. Si existen, agregarle el personaje mediante un update*/
-    //post
     @PostMapping
     public void addNewCelebrity(@RequestBody Celebrity celebrity) {
         celebrityService.addNewCelebrity(celebrity);

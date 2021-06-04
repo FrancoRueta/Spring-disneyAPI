@@ -4,25 +4,28 @@ package com.franco.disney.api.Services;
 import com.franco.disney.api.Auxiliars.DateTimeAux;
 import com.franco.disney.api.Entities.Celebrity;
 import com.franco.disney.api.Entities.DTOS.MovieDTO;
+import com.franco.disney.api.Entities.Genre;
 import com.franco.disney.api.Entities.Movie;
+import com.franco.disney.api.Repositories.GenreRepository;
 import com.franco.disney.api.Repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class MovieService {
 
     private final MovieRepository movieRepository;
+    private final GenreRepository genreRepository;
+    private final DateTimeAux aux = new DateTimeAux();
 
     @Autowired
-    public MovieService(MovieRepository movieRepository) {
+    public MovieService(MovieRepository movieRepository, GenreRepository genreRepository) {
         this.movieRepository = movieRepository;
+        this.genreRepository = genreRepository;
     }
 
 
@@ -31,7 +34,6 @@ public class MovieService {
         * movieDTO, un transfer object que posee solo los datos necesarios.*/
         List<MovieDTO> dtoList = new ArrayList<>();
         for (Movie m: movieRepository.findAll()){
-            DateTimeAux aux = new DateTimeAux();
             MovieDTO newMovie = new MovieDTO();
             if (m.getImage() != null){ newMovie.setImage(m.getImage()); }
             if (m.getTitle() != null){ newMovie.setTitle(m.getTitle()); }
@@ -41,37 +43,37 @@ public class MovieService {
         return dtoList;
     }
 
-    //get by id
     public Movie getMovieById(Long movieId) {
         return movieRepository.findById(movieId).orElseThrow(() ->
-                new IllegalStateException("No existe la pelicula " + movieId));
-    }
+                new IllegalStateException("No existe la pelicula " + movieId)); }
 
-    //get by title
     public Movie getMovieByTitle(String title) {
         return movieRepository.findMovieByTitle(title).orElseThrow(() ->
-                new IllegalStateException("No existe la pelicula con titulo: "+title));
-    }
+                new IllegalStateException("No existe la pelicula con titulo: "+title)); }
 
-    //get by genre
     public List<Movie> getMovieByGenreId(Long genreId) {
         return movieRepository.findMovieByGenreId(genreId).orElseThrow(() ->
-                new IllegalStateException("No existe el genero de id: "+genreId));
-    }
+                new IllegalStateException("No existe el genero de id: "+genreId)); }
 
-    //get by date
-    /*public List<Movie> getMovieByDate(String date) {
-
-    }*/
+    public List<Movie> getMovieByDate(String date) {
+        return movieRepository.findMovieByDate(aux.strDt(date)).orElseThrow(() ->
+                new IllegalStateException("No existen peliculas con fecha: "+date)); }
 
 
-
-    //post
     public void addNewMovie(Movie movie) {
-        movieRepository.save(movie);
-    }
+        Movie movieClone = movie;
+        //si la pelicula llega con un genero:
+        if (movieClone.getGenre() != null){
+            Genre movieGenre = movieClone.getGenre();
+            //Si existe un genero del mismo nombre en el repo:
+            if (genreRepository.existsByName(movieGenre.getName())){
+                //le asigno el genero ya existente
+                movieClone.setGenre(genreRepository.findByName(movieGenre.getName()));
+                movieRepository.save(movieClone); }
+            else{ movieRepository.save(movieClone); } }
+        else{movieRepository.save(movieClone);} }
 
-    //delete
+
     public void deleteMovie(Long movieId) {
         boolean exists = movieRepository.existsById(movieId);
         if (!exists){
@@ -80,7 +82,8 @@ public class MovieService {
         movieRepository.deleteById(movieId);
     }
 
-    //update
+
+
     @Transactional
     public void updateMovie(Long movieId, String image, String title, String dateCreation) {
         Movie movie = movieRepository.findById(movieId).orElseThrow(() ->
@@ -92,14 +95,4 @@ public class MovieService {
             movie.setDateCreation(date);
         }
     }
-
-    public void addCharacter(Celebrity celebrity, Long movieId) {
-        Movie movie = movieRepository.findById(movieId).orElseThrow(() ->
-                new IllegalStateException("No existe la pelicula " + movieId));
-        Set<Celebrity> celebs = movie.getCelebrities();
-        celebs.add(celebrity);
-        movie.setCelebrities(celebs);
-    }
-
-
 }
