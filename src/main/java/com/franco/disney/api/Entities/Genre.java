@@ -12,9 +12,6 @@ import java.util.Set;
 @Table
 @Entity
 @Data
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class Genre {
     @Id
     @SequenceGenerator(
@@ -36,7 +33,7 @@ public class Genre {
     @OneToMany(mappedBy = "genre",targetEntity = Movie.class,cascade =
             {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
     @EqualsAndHashCode.Exclude
-    @JsonIgnoreProperties({"movies"})
+    @JsonIgnoreProperties("genre")
     private Set<Movie> movies = new HashSet<>();
 
     public Genre() {

@@ -15,10 +15,7 @@ import java.util.Set;
 @Table(name = "movies")
 @Entity
 @Data
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
-public class Movie implements Comparable<Movie> {
+public class Movie{
     @Id
     @SequenceGenerator(
             name = "movie_sequence",
@@ -47,12 +44,14 @@ public class Movie implements Comparable<Movie> {
             joinColumns = @JoinColumn(name = "movie_id",referencedColumnName = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "celebrity_id",referencedColumnName = "celebrity_id"))
     @EqualsAndHashCode.Exclude
+    @JsonIgnoreProperties("movies")
     private Set<Celebrity> celebrities = new HashSet<>();
 
 
     @ManyToOne(targetEntity = Genre.class, cascade =
             {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
     @JoinColumn(name = "genre_id")
+    @JsonIgnoreProperties("movies")
     private Genre genre;
 
     public Movie() {
@@ -78,13 +77,5 @@ public class Movie implements Comparable<Movie> {
         this.dateCreation = dateCreation;
         this.celebrities = celebrities;
         this.genre = genre;
-    }
-
-    @Override
-    public int compareTo(Movie m) {
-        if (getDateCreation() == null || m.getDateCreation() == null) {
-            return 0;
-        }
-        return getDateCreation().compareTo(m.getDateCreation());
     }
 }

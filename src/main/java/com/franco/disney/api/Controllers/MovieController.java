@@ -33,8 +33,7 @@ public class MovieController {
     public Set<Movie> getMovieBy(@RequestParam(required = false) Long id,
                                   @RequestParam(required = false) String title,
                                   @RequestParam(required = false) Long genre,
-                                  @RequestParam(required = false) String date,
-                                  @RequestParam(required = false) String order){
+                                  @RequestParam(required = false) String date){
         Set<Movie> movieList = new HashSet<>();
         if(id != null){movieList.add(movieService.getMovieById(id));}
         if(title != null){movieList.add(movieService.getMovieByTitle(title));}
