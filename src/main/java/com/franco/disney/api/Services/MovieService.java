@@ -38,73 +38,36 @@ public class MovieService {
         List<MovieDTO> dtoList = new ArrayList<>();
         for (Movie m : movieRepository.findAll()) {
             MovieDTO newMovie = new MovieDTO();
-            if (m.getImage() != null) {
-                newMovie.setImage(m.getImage());
-            }
-            if (m.getTitle() != null) {
-                newMovie.setTitle(m.getTitle());
-            }
-            if (m.getDateCreation() != null) {
-                newMovie.setDateCreation(aux.dtStr(m.getDateCreation()));
-            }
+            if (m.getImage() != null) { newMovie.setImage(m.getImage()); }
+            if (m.getTitle() != null) { newMovie.setTitle(m.getTitle()); }
+            if (m.getDateCreation() != null) { newMovie.setDateCreation(aux.dtStr(m.getDateCreation())); }
             dtoList.add(newMovie);
         }
         return dtoList;
     }
+
 
     public Movie getMovieById(Long movieId) {
         return movieRepository.findById(movieId).orElseThrow(() ->
                 new IllegalStateException("No existe la pelicula " + movieId));
     }
 
+
     public Movie getMovieByTitle(String title) {
         return movieRepository.findMovieByTitle(title).orElseThrow(() ->
                 new IllegalStateException("No existe la pelicula con titulo: " + title));
     }
+
 
     public Set<Movie> getMovieByGenreId(Long genreId) {
         return movieRepository.findMovieByGenre_Id(genreId).orElseThrow(() ->
                 new IllegalStateException("No existe el genero de id: " + genreId));
     }
 
+
     public Set<Movie> getMovieByDate(String date) {
         return movieRepository.findMovieByDateCreation(aux.strDt(date)).orElseThrow(() ->
                 new IllegalStateException("No existen peliculas con fecha: " + date));
-    }
-
-
-    public void addNewMovie(Movie movie) {
-        Movie movieClone = movie;
-        //si la pelicula llega con un genero:
-        if (movieClone.getGenre() != null) {
-            Genre movieGenre = movieClone.getGenre();
-            //Si existe un genero del mismo nombre en el repo:
-            if (genreRepository.existsByName(movieGenre.getName())) {
-                //le asigno el genero ya existente
-                movieClone.setGenre(genreRepository.findByName(movieGenre.getName()));
-            }
-        }
-        //si la pelicula.celebridades no esta vacia:
-        if (movieClone.getCelebrities().size() > 0) {
-            //tomo todas las celebridades y creo una lista vacia:
-            Set<Celebrity> celebritiesMovie = movie.getCelebrities();
-            Set<Celebrity> newCelebrities = new HashSet<>();
-            //por cada celebridad:
-            for (Celebrity c : celebritiesMovie) {
-                //si existe en el repo,agrego esta a la lista vacia.
-                if (celebrityRepository.existsByName(c.getName())) {
-                    newCelebrities.add(celebrityRepository.findByName(c.getName()));
-                }
-                //si no,agrego la original.
-                else {
-                    newCelebrities.add(c);
-                }
-            }
-            //finalmente, seteo pelicula.celebridades a la nueva lista.
-            movieClone.setCelebrities(newCelebrities);
-        }
-        //finalmente, se guarda.
-        movieRepository.save(movieClone);
     }
 
 
@@ -131,5 +94,52 @@ public class MovieService {
             LocalDate date = LocalDate.parse(dateCreation);
             movie.setDateCreation(date);
         }
+    }
+
+
+    public void addNewMovie(Movie movie) {
+        if (this.doesNotExist(movie)) {
+            if (movie.getGenre() != null) {
+                this.checkDuplicateGenre(movie);
+            }
+            if (movie.getCelebrities().size() > 0) {
+                Set<Celebrity> newCelebrities = this.checkDuplicateCelebrities(movie);
+                movie.setCelebrities(newCelebrities);
+            }
+            movieRepository.save(movie);
+        }
+    }
+
+
+    //auxiliar de addNewMovie
+    private boolean doesNotExist(Movie movie) {
+        return (!movieRepository.existsByTitle(movie.getTitle()));
+    }
+
+
+    //auxiliar de addNewMovie
+    private void checkDuplicateGenre(Movie movie){
+        Genre movieGenre = movie.getGenre();
+        if (genreRepository.existsByName(movieGenre.getName())) {
+            //le asigno el genero ya existente
+            movie.setGenre(genreRepository.findByName(movieGenre.getName()));
+        }
+    }
+
+
+    //auxiliar de addNewMovie
+    private Set<Celebrity> checkDuplicateCelebrities(Movie movie){
+        //tomo todas las celebridades y creo una lista vacia:
+        Set<Celebrity> celebritiesMovie = movie.getCelebrities();
+        Set<Celebrity> newCelebrities = new HashSet<>();
+        for (Celebrity celebrity : celebritiesMovie) {
+            //si existe en el repo,agrego esta a la lista vacia.
+            if (celebrityRepository.existsByName(celebrity.getName())) {
+                newCelebrities.add(celebrityRepository.findByName(celebrity.getName()));
+            }
+            //si no,agrego la original.
+            else { newCelebrities.add(celebrity); }
+        }
+        return newCelebrities;
     }
 }

@@ -16,6 +16,8 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     Optional<Movie> findMovieByTitle(String title);
 
+    boolean existsByTitle(String title);
+
     Optional<Set<Movie>> findMovieByGenre_Id(Long genreId);
 
     Optional<Set<Movie>> findMovieByDateCreation(LocalDate localDate);

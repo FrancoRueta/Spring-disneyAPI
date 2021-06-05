@@ -45,16 +45,17 @@ public class MovieController {
     }
 
 
-
     @PostMapping
     public void addNewMovie(@RequestBody Movie movie){
         movieService.addNewMovie(movie);
     }
 
+
     @DeleteMapping(path= "{movieId}")
     public void deleteMovie(@PathVariable("movieId") Long movieId){
         movieService.deleteMovie(movieId);
     }
+
 
     @PutMapping(path = "{movieId}")
     public void updateMovie(@PathVariable("movieId") Long movieId,
