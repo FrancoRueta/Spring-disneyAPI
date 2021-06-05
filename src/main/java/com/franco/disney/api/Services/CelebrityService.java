@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CelebrityService {
@@ -69,6 +71,8 @@ public class CelebrityService {
 
     //crear
     public void addNewCelebrity(Celebrity celebrity){
+        Set<Movie> emptyMovies = new HashSet<>();
+        celebrity.setMovies(emptyMovies);
         celebrityRepository.save(celebrity);
     }
 
