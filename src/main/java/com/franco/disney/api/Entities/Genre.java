@@ -27,7 +27,7 @@ public class Genre {
     @Column(name = "genre_id",unique = true)
     private Long id;
 
-    @Column(name = "name",unique = true)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "image")

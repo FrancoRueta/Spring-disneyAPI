@@ -20,19 +20,15 @@ public class Celebrity {
     @SequenceGenerator(
             name= "celebrity_sequence",
             sequenceName = "celebrity_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY,
-            generator = "celebrity_sequence"
-    )
+            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "celebrity_sequence")
     @Column(name = "celebrity_id",unique = true)
     private Long id;
 
     @Column(name = "image")
     private String image;
 
-    @Column(name = "name",unique = true)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "age")
@@ -43,7 +39,6 @@ public class Celebrity {
 
     @Column(name = "story")
     private String story;
-
 
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH},
             mappedBy = "celebrities",targetEntity = Movie.class)

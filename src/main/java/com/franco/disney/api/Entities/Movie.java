@@ -28,7 +28,7 @@ public class Movie implements Comparable<Movie> {
     @GeneratedValue(
             strategy = GenerationType.IDENTITY,
             generator = "movie_sequence")
-    @Column(name = "movie_id")
+    @Column(name = "movie_id",unique = true)
     private Long id;
 
     @Column(name = "image")

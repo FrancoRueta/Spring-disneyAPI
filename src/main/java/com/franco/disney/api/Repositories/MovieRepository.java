@@ -14,12 +14,9 @@ import java.util.Set;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 
-    @Query("SELECT m FROM Movie m WHERE m.title = ?1")
     Optional<Movie> findMovieByTitle(String title);
 
-    @Query("SELECT m FROM Movie m INNER JOIN m.genre g WHERE g.id = ?1")
-    Optional<Set<Movie>> findMovieByGenreId(Long genreId);
+    Optional<Set<Movie>> findMovieByGenre_Id(Long genreId);
 
-    @Query("SELECT m FROM Movie m WHERE m.dateCreation = ?1")
-    Optional<Set<Movie>> findMovieByDate(LocalDate localDate);
+    Optional<Set<Movie>> findMovieByDateCreation(LocalDate localDate);
 }

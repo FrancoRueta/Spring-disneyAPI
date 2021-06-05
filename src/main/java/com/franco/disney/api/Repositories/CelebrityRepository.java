@@ -12,18 +12,13 @@ import java.util.Optional;
 @Repository
 public interface CelebrityRepository extends JpaRepository<Celebrity, Long> {
 
-
-    @Query("SELECT c FROM Celebrity c WHERE c.name = ?1")
     Optional<Celebrity> findCelebrityByName(String name);
 
-    @Query("SELECT c FROM Celebrity c WHERE c.weight = ?1")
     Optional<List<Celebrity>> findCelebrityByWeight(Integer weight);
 
-    @Query("SELECT c FROM Celebrity c WHERE c.age = ?1")
     Optional<List<Celebrity>> findCelebrityByAge(Integer age);
 
-    @Query("SELECT c FROM Celebrity c INNER JOIN c.movies m WHERE m.id = ?1")
-    Optional<List<Celebrity>> findCelebrityByMovieId(Long movieId);
+    Optional<List<Celebrity>> findCelebrityByMovies_Id(Long movieId);
 
     boolean existsByName(String name);
 

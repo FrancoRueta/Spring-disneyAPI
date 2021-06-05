@@ -63,12 +63,12 @@ public class MovieService {
     }
 
     public Set<Movie> getMovieByGenreId(Long genreId) {
-        return movieRepository.findMovieByGenreId(genreId).orElseThrow(() ->
+        return movieRepository.findMovieByGenre_Id(genreId).orElseThrow(() ->
                 new IllegalStateException("No existe el genero de id: " + genreId));
     }
 
     public Set<Movie> getMovieByDate(String date) {
-        return movieRepository.findMovieByDate(aux.strDt(date)).orElseThrow(() ->
+        return movieRepository.findMovieByDateCreation(aux.strDt(date)).orElseThrow(() ->
                 new IllegalStateException("No existen peliculas con fecha: " + date));
     }
 

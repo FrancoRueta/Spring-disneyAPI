@@ -65,15 +65,19 @@ public class CelebrityService {
 
     //get by movie
     public List<Celebrity> getCelebrityByMovieId(Long movieId) {
-        return celebrityRepository.findCelebrityByMovieId(movieId).orElseThrow(() ->
+        return celebrityRepository.findCelebrityByMovies_Id(movieId).orElseThrow(() ->
                 new IllegalStateException("No existe el persona con pelicula de id: "+movieId));
     }
 
     //crear
     public void addNewCelebrity(Celebrity celebrity){
-        Set<Movie> emptyMovies = new HashSet<>();
-        celebrity.setMovies(emptyMovies);
-        celebrityRepository.save(celebrity);
+        //Si en el repo NO hay una peli de mismo nombre, no hagas nada
+        if(!celebrityRepository.existsByName(celebrity.getName())){
+            //Limpiamos las peliculas, porque no se crean desde aca.
+            Set<Movie> emptyMovies = new HashSet<>();
+            celebrity.setMovies(emptyMovies);
+            celebrityRepository.save(celebrity);
+        }
     }
 
     //borrar

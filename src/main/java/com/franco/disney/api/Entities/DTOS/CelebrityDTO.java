@@ -10,11 +10,11 @@ public class CelebrityDTO implements Serializable {
     private String name;
     private String image;
 
+    public CelebrityDTO() {
+    }
+
     public CelebrityDTO(String name, String image) {
         this.name = name;
         this.image = image;
-    }
-
-    public CelebrityDTO() {
     }
 }
