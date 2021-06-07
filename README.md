@@ -7,7 +7,7 @@ personajes en una pelicula, CRUD basico, etc._
 ## Instrucciones de uso 🚀
 
 _Debes crear una database MYSQL, con el nombre disneyAPI, mas detalles sobre esto en el
-fichero [instalacion.md](utilidades/instalacion.md) .
+fichero [instalacion.md](utilidades/instalacion.md) ._
 
 ## Testeo
 
