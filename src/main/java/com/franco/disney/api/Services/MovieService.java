@@ -70,6 +70,11 @@ public class MovieService {
                 new IllegalStateException("No existen peliculas con fecha: " + date));
     }
 
+    public Set<Movie> getMovieByRate(Integer rate){
+        return movieRepository.findMovieByRate(rate).orElseThrow(() ->
+                new IllegalStateException("No existen peliculas con puntaje: " + rate));
+    }
+
 
     public void deleteMovie(Long movieId) {
         boolean exists = movieRepository.existsById(movieId);
@@ -86,7 +91,7 @@ public class MovieService {
                 new IllegalStateException("No existe la pelicula " + movieId));
         if (image != null) { movie.setImage(image); }
         if (title != null) { movie.setTitle(title); }
-        if (rate != null && this.hasCorrectRate(rate)){ movie.setRate(rate); }
+        if (this.hasCorrectRate(rate)){ movie.setRate(rate); }
         if (dateCreation != null) {
             LocalDate date = LocalDate.parse(dateCreation);
             movie.setDateCreation(date); }

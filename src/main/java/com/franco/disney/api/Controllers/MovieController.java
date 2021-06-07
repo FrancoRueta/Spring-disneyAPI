@@ -2,6 +2,7 @@ package com.franco.disney.api.Controllers;
 
 
 import com.franco.disney.api.Entities.DTOS.MovieDTO;
+import com.franco.disney.api.Entities.Genre;
 import com.franco.disney.api.Entities.Movie;
 import com.franco.disney.api.Services.MovieService;
 import com.sun.xml.bind.v2.TODO;
@@ -34,12 +35,13 @@ public class MovieController {
                                  @RequestParam(required = false) String title,
                                  @RequestParam(required = false) Long genre,
                                  @RequestParam(required = false) String date,
-                                 @RequestParam(required = false) String order){
+                                 @RequestParam(required = false) Integer rate){
         Set<Movie> movieList = new HashSet<>();
         if(id != null){movieList.add(movieService.getMovieById(id));}
         if(title != null){movieList.add(movieService.getMovieByTitle(title));}
         if(genre != null){movieList.addAll(movieService.getMovieByGenreId(genre));}
         if(date != null){movieList.addAll(movieService.getMovieByDate(date));}
+        if(rate != null){movieList.addAll(movieService.getMovieByRate(rate));}
         return movieList;
     }
 
