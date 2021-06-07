@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,6 +36,8 @@ public class Movie{
     @Column(name = "date_creation")
     private LocalDate dateCreation;
 
+    @Column(name = "rate")
+    private Integer rate;
 
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH},
     targetEntity = Celebrity.class)

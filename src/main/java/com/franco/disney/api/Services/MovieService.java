@@ -81,24 +81,20 @@ public class MovieService {
 
 
     @Transactional
-    public void updateMovie(Long movieId, String image, String title, String dateCreation) {
+    public void updateMovie(Long movieId, String image, String title, String dateCreation, Integer rate) {
         Movie movie = movieRepository.findById(movieId).orElseThrow(() ->
                 new IllegalStateException("No existe la pelicula " + movieId));
-        if (image != null) {
-            movie.setImage(image);
-        }
-        if (title != null) {
-            movie.setTitle(title);
-        }
+        if (image != null) { movie.setImage(image); }
+        if (title != null) { movie.setTitle(title); }
+        if (rate != null && this.hasCorrectRate(rate)){ movie.setRate(rate); }
         if (dateCreation != null) {
             LocalDate date = LocalDate.parse(dateCreation);
-            movie.setDateCreation(date);
-        }
+            movie.setDateCreation(date); }
     }
 
 
     public void addNewMovie(Movie movie) {
-        if (this.doesNotExist(movie)) {
+        if (this.doesNotExist(movie) && this.hasCorrectRate(movie.getRate())) {
             if (movie.getGenre() != null) {
                 this.checkDuplicateGenre(movie);
             }
@@ -108,6 +104,11 @@ public class MovieService {
             }
             movieRepository.save(movie);
         }
+    }
+
+    //auxiliar de addNewMovie
+    private boolean hasCorrectRate(Integer rate){
+        return(rate >= 0 && rate <= 5);
     }
 
 
@@ -121,7 +122,6 @@ public class MovieService {
     private void checkDuplicateGenre(Movie movie){
         Genre movieGenre = movie.getGenre();
         if (genreRepository.existsByName(movieGenre.getName())) {
-            //le asigno el genero ya existente
             movie.setGenre(genreRepository.findByName(movieGenre.getName()));
         }
     }
@@ -135,8 +135,7 @@ public class MovieService {
         for (Celebrity celebrity : celebritiesMovie) {
             //si existe en el repo,agrego esta a la lista vacia.
             if (celebrityRepository.existsByName(celebrity.getName())) {
-                newCelebrities.add(celebrityRepository.findByName(celebrity.getName()));
-            }
+                newCelebrities.add(celebrityRepository.findByName(celebrity.getName())); }
             //si no,agrego la original.
             else { newCelebrities.add(celebrity); }
         }

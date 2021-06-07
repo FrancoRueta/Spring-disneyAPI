@@ -31,15 +31,15 @@ public class MovieController {
 
     @GetMapping
     public Set<Movie> getMovieBy(@RequestParam(required = false) Long id,
-                                  @RequestParam(required = false) String title,
-                                  @RequestParam(required = false) Long genre,
-                                  @RequestParam(required = false) String date){
+                                 @RequestParam(required = false) String title,
+                                 @RequestParam(required = false) Long genre,
+                                 @RequestParam(required = false) String date,
+                                 @RequestParam(required = false) String order){
         Set<Movie> movieList = new HashSet<>();
         if(id != null){movieList.add(movieService.getMovieById(id));}
         if(title != null){movieList.add(movieService.getMovieByTitle(title));}
         if(genre != null){movieList.addAll(movieService.getMovieByGenreId(genre));}
         if(date != null){movieList.addAll(movieService.getMovieByDate(date));}
-        //TODO("AGREGAR EL ORDEN DE FILTRADO POR FECHA.")
         return movieList;
     }
 
@@ -60,7 +60,8 @@ public class MovieController {
     public void updateMovie(@PathVariable("movieId") Long movieId,
                             @RequestParam(required = false) String image,
                             @RequestParam(required = false) String title,
-                            @RequestParam(required = false) String dateCreation) {
-        movieService.updateMovie(movieId,image,title,dateCreation);
+                            @RequestParam(required = false) String dateCreation,
+                            @RequestParam(required = false) Integer rate) {
+        movieService.updateMovie(movieId,image,title,dateCreation,rate);
     }
 }
