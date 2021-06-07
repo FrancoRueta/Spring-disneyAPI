@@ -6,8 +6,8 @@ personajes en una pelicula, CRUD basico, etc._
 
 ## Instrucciones de uso 🚀
 
-_Debes crear una database MYSQL, con el nombre disneyAPI, mas detalles sobre esto en el fichero instalacion.md (en
-utilidades.)_
+_Debes crear una database MYSQL, con el nombre disneyAPI, mas detalles sobre esto en el
+fichero [instalacion.md](utilidades/instalacion.md) .
 
 ## Testeo
 
@@ -21,8 +21,8 @@ endpoints de la API._
 
 ## Licencia 📄
 
-Este proyecto está bajo la Licencia MIT - podes mirar el archivo [INSTALACION](utilidades/instalacion.md) para detalles
-al respecto.
+Este proyecto está bajo la Licencia MIT - podes mirar el archivo [licencia](utilidades/LICENSE.md) para detalles al
+respecto.
 
 ## Expresiones de Gratitud 🎁
 
